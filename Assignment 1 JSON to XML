@@ -1,0 +1,33 @@
+/*Student Name: Cynthia Maroupas Student ID: 261119382*/
+// Importing the required libraries for JSON to XML conversion
+
+import org.json.JSONObject;
+import org.json.XML;
+
+public class Convert_JSON_to_XML {
+    public static void main(String[] args) {
+        // Defining a student information JSON string
+        String jsonData = "{\"student\":{" +
+                "\"name\":\"Helen Smith\"," +
+                "\"age\":35," +
+                "\"gender\":\"Female\"," +
+                "\"address\":\"845 Rue Durocher\"," +
+                "\"courses\":[" +
+                "  {\"subjectName\":\"Programming Techniques\",\"grade\":80}," +
+                "  {\"subjectName\":\"Web Development\",\"grade\":92}," +
+                "  {\"subjectName\":\"Web Services\",\"grade\":82}," +
+                "  {\"subjectName\":\"Data Structures and Algorithms\",\"grade\":77}" +
+                "]" +
+                "}" +
+                "}";
+
+        // Creating a JSONObject from the student JSON string
+        JSONObject jsonObject = new JSONObject(jsonData);
+
+        // Converting the JSONObject to XML
+        String xml = XML.toString(jsonObject);
+
+        // Printing the resulting XML
+        System.out.println(xml);
+    }
+}
