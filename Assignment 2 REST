@@ -1,0 +1,228 @@
+//Student Name: Cynthia Maroupas Student ID: 261119382
+//Student Name: Danica Rossi Student ID:260869654
+//Student Name: Gerome Caron-De Courval Student ID: 261124677
+
+package com.example.fibonacci;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+// Define a REST controller for the Fibonacci service
+@RestController
+@RequestMapping("/assignment2/services/fiborestservice")
+public class FibonacciController {
+
+    // Generates Fibonacci sequence up to n and returns as a JSON string
+    @GetMapping("/genfibonacci/{n}")
+    public ResponseEntity<String> genFibonacci(@PathVariable int n) throws JsonProcessingException {
+
+        // Check if n is within valid range
+        if (n < 0 || n >= 100) {
+            // If n is outside the valid range, throw an exception with an error message
+            throw new IllegalArgumentException("n should be between 0 and 99");
+        }
+
+        // Create an empty list to store the Fibonacci sequence
+        List<Integer> fibonacciList = new ArrayList<>();
+
+        // Initialize the first two numbers in the sequence
+        int x = 0, y = 1;
+
+        // Loop until the current number in the sequence is greater than n
+        while (x <= n) {
+            // Add the current number in the sequence to the list
+            fibonacciList.add(x);
+
+            // Calculate the next number in the sequence
+            int temp = x;
+            x = y;
+            y += temp;
+        }
+
+        // Create an ObjectMapper object to convert the Fibonacci sequence list to a JSON string
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        // Convert the Fibonacci sequence list to a JSON string
+        String fibonacciJson = objectMapper.writeValueAsString(fibonacciList);
+
+        // Return the JSON string as the response with a 200 OK status code
+        return ResponseEntity.ok(fibonacciJson);
+    }
+
+    // Generates the nth number in the Fibonacci sequence and returns as a JSON string
+    @GetMapping("/genfibo/{n}")
+    public ResponseEntity<String> genFibo(@PathVariable int n) throws JsonProcessingException {
+        // Check if n is within valid range
+        if (n < 10 || n > 20) {
+            // If n is outside the valid range, throw an exception with an error message
+            throw new IllegalArgumentException("n should be between numbers 10 and 20");
+        }
+
+        // Initialize the first two numbers in the sequence
+        int x = 0, y = 1;
+
+        // Loop until the nth number in the sequence is reached
+        for (int i = 0; i < n - 1; i++) {
+            // Calculate the next number in the sequence
+            int temp = x;
+            x = y;
+            y += temp;
+        }
+
+        // Create an ObjectMapper object to convert the nth Fibonacci number to a JSON string
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        // Convert the nth Fibonacci number to a JSON string
+        String fiboJson = objectMapper.writeValueAsString(y);
+
+        // Return the JSON string as the response with a 200 OK status code
+        return ResponseEntity.ok(fiboJson);
+    }
+
+    // Calculates the sum of the first 6 numbers in the Fibonacci sequence and returns as a JSON string
+    @GetMapping("/calcfib6Sum")
+    public ResponseEntity<String> calcFib6Sum() throws JsonProcessingException {
+        // Initialize the first two numbers in the sequence
+        int x = 0, y = 1;
+
+        // Initialize the running total to zero
+        int sum = 0;
+
+        // Loop through the first 6 numbers in the sequence
+        for (int i = 0; i < 6; i++) {
+            // Add the current number to the running total
+            sum += x;
+
+            // Calculate the next number in the sequence
+            int temp = x;
+            x = y;
+            y += temp;
+        }
+
+        // Create an ObjectMapper object to convert the sum to a JSON string
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        // Convert the sum to a JSON string
+        String sumJson = objectMapper.writeValueAsString(sum);
+
+        // Return the JSON string as the response with a 200 OK status code
+        return ResponseEntity.ok(sumJson);
+    }
+
+
+    // Checks if n is a member of the Fibonacci sequence and returns as a JSON string
+    @GetMapping("/chkfib/{n}")
+    public ResponseEntity<String> chkFib(@PathVariable int n) throws JsonProcessingException {
+        // Check if n is a non-negative integer
+        if (n < 0) {
+            // If n is negative, throw an exception with an error message
+            throw new IllegalArgumentException("n should be a non-negative integer");
+        }
+
+        // Initialize the first two numbers in the sequence
+        int x = 0, y = 1;
+
+        // Generate the Fibonacci sequence until the last number is greater than n
+        while (x < n) {
+            // Calculate the next number in the sequence
+            int temp = x;
+            x = y;
+            y += temp;
+        }
+
+        // Check if the last number in the sequence is equal to n
+        boolean result = x == n;
+
+        // Create an ObjectMapper object to convert the boolean result to a JSON string
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        // Convert the boolean result to a JSON string
+        String resultJson = objectMapper.writeValueAsString(result);
+
+        // Return the JSON string as the response with a 200 OK status code
+        return ResponseEntity.ok(resultJson);
+    }
+
+    // Handles NumberFormatException when input data cannot be converted to the required format
+    @ExceptionHandler(NumberFormatException.class)
+    public ResponseEntity<String> handleNumberFormatException(NumberFormatException e) {
+        // Return a 400 Bad Request response with an error message containing the exception message
+        // This is done to inform the client that the request contained invalid input data
+        return ResponseEntity.badRequest().body("Invalid input: " + e.getMessage());
+    }
+
+    // Handles all other exceptions that are not caught by specific handlers
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleException(Exception e) {
+        // Return a 500 Internal Server Error response with the exception message
+        // This is done to inform the client that an unexpected error occurred on the server
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
+}
+//Student Name: Cynthia Maroupas Student ID: 261119382
+//Student Name: Danica Rossi Student ID:260869654
+//Student Name: Gerome Caron-De Courval Student ID: 261124677
+
+package com.example.fibonacci;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class FibonacciSequenceOperationsApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(FibonacciSequenceOperationsApplication.class, args);
+    }
+
+}
+
+//Student Name: Cynthia Maroupas Student ID: 261119382
+//Student Name: Danica Rossi Student ID:260869654
+//Student Name: Gerome Caron-De Courval Student ID: 261124677
+
+package com.example.fibonacci;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        // Configures security for HTTP requests
+        http
+                .authorizeRequests()
+                //Allow any authenticated user to access any URL
+                .anyRequest().authenticated()
+                .and()
+                //Enable basic authentication
+                .httpBasic();
+    }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        // Configures authentication for the application
+        auth
+                .inMemoryAuthentication()
+                //Add a user with username "user" and password "password"
+                //The {noop} prefix indicates that the password should be stored in plaintext
+                .withUser("user").password("{noop}password").roles("USER");
+    }
+}
+
+
+
+
+
