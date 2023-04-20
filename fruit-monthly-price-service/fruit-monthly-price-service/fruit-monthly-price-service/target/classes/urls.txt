@@ -1,0 +1,3 @@
+Fruit Monthly Price: http://localhost:8000/fruit-month-price/fruit/raspberry/month/november
+Fruit Total Price: http://localhost:8100/fruit-total-price/fruit/raspberry/month/november/quantity/5
+
